@@ -1,0 +1,278 @@
+/* Logimind — design tokens v2.
+   Palette éditoriale enrichie : papier crème, encre noire, bordeaux, et accent doré (or vieux).
+   Sérif pour titres et corps long, sans pour UI.
+*/
+
+:root {
+  /* Surfaces — papier */
+  --bg-page: #f6f3ec;
+  --bg-page-deep: #ede8db;
+  --bg-card: #fdfbf6;
+  --bg-muted: #ebe5d3;
+  --bg-overlay: rgba(246, 243, 236, 0.88);
+  --bg-dark: #1c1b18;
+
+  /* Encre */
+  --ink-strong: #16140f;
+  --ink-default: #2c2a24;
+  --ink-muted: #6f6b5f;
+  --ink-faint: #a39d8e;
+  --ink-on-dark: #f6f3ec;
+
+  /* Bordures */
+  --border-default: #e0d9c5;
+  --border-strong: #c1b9a3;
+  --border-dark: #2a2823;
+
+  /* Accents */
+  --accent: #8b1e1e;          /* bordeaux profond */
+  --accent-hover: #6f1717;
+  --accent-soft: #f0dcdc;
+  --gold: #a07a2f;            /* or vieux pour featured / ornements */
+  --gold-soft: #ead9b2;
+
+  /* États */
+  --success: #2d6a4f;
+  --warning: #b45309;
+  --danger: #b91c1c;
+
+  /* Typographie */
+  --font-serif: 'Crimson Pro', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+
+  /* Layout */
+  --max-w: 1180px;
+  --max-w-prose: 680px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+
+  /* Élévation discrète */
+  --shadow-sm: 0 1px 2px rgba(22, 20, 15, 0.05);
+  --shadow-md: 0 6px 18px rgba(22, 20, 15, 0.08);
+  --shadow-lg: 0 18px 40px rgba(22, 20, 15, 0.12);
+
+  /* Animations */
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+  box-sizing: border-box;
+  /* Empêche tout élément de déborder horizontalement sans qu'on s'en aperçoive */
+  min-width: 0;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg-page);
+  color: var(--ink-default);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: smooth; /* fallback pour ancres si Lenis non chargé */
+
+  /* === Anti-overflow horizontal (root cause du bug mobile) ===
+     `clip` au lieu de `hidden` pour ne pas casser position:sticky du header.
+     `width: 100%` pour bloquer toute tentative d'élément à dépasser */
+  overflow-x: clip;
+  width: 100%;
+  max-width: 100vw;
+}
+
+img, video, svg, canvas, iframe {
+  max-width: 100%;
+}
+
+/* Lenis : empêche le double-scroll et garantit que html prend toute la hauteur */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* Subtle paper texture via SVG noise — léger, ne distrait pas la lecture */
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-page);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='280' height='280'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.05 0 0 0 0 0.05 0 0 0 0 0.04 0 0 0 0.035 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  background-size: 280px 280px;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-serif);
+  color: var(--ink-strong);
+  font-weight: 500;
+  letter-spacing: -0.012em;
+  margin: 0;
+}
+
+h1 {
+  font-size: clamp(2.2rem, 4.2vw, 3.4rem);
+  line-height: 1.06;
+  font-weight: 500;
+}
+h2 {
+  font-size: clamp(1.6rem, 2.6vw, 2.1rem);
+  line-height: 1.2;
+}
+h3 {
+  font-size: 1.3rem;
+  line-height: 1.3;
+}
+
+p {
+  margin: 0 0 1em;
+}
+
+a {
+  color: var(--ink-strong);
+  text-decoration: underline;
+  text-decoration-color: var(--border-strong);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.18s var(--ease-smooth), color 0.18s var(--ease-smooth);
+}
+a:hover {
+  text-decoration-color: var(--accent);
+  color: var(--accent);
+}
+
+button {
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+input,
+textarea,
+select {
+  font-family: inherit;
+  font-size: 16px;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+@media (max-width: 640px) {
+  .container {
+    padding: 0 18px;
+  }
+  h1 { letter-spacing: -0.015em; }
+  h2 { font-size: clamp(1.4rem, 5vw, 1.7rem) !important; }
+}
+
+/* Touch-friendly minimums (Apple HIG = 44 px) */
+@media (hover: none) and (pointer: coarse) {
+  button, a[href], input[type="submit"], input[type="button"] {
+    min-height: 44px;
+  }
+}
+
+/* === Utilities éditoriales === */
+
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 600;
+}
+
+.serif {
+  font-family: var(--font-serif);
+}
+
+.lead {
+  font-family: var(--font-serif);
+  font-size: clamp(1.15rem, 1.4vw, 1.35rem);
+  line-height: 1.55;
+  color: var(--ink-default);
+}
+
+/* Drop cap (1ère lettre de paragraphe) */
+.drop-cap::first-letter {
+  font-family: var(--font-serif);
+  font-size: 4.2em;
+  float: left;
+  line-height: 0.9;
+  padding: 6px 10px 0 0;
+  font-weight: 500;
+  color: var(--accent);
+}
+
+@media (max-width: 640px) {
+  .drop-cap::first-letter {
+    font-size: 3.2em;
+    padding: 4px 8px 0 0;
+  }
+}
+
+/* Petits caps */
+.smallcaps {
+  font-variant: small-caps;
+  letter-spacing: 0.04em;
+}
+
+/* Reveal au scroll */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.reveal {
+  animation: fadeUp 0.7s var(--ease-smooth) both;
+}
+.reveal-d1 { animation-delay: 0.08s; }
+.reveal-d2 { animation-delay: 0.16s; }
+.reveal-d3 { animation-delay: 0.24s; }
+.reveal-d4 { animation-delay: 0.32s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .reveal-d1, .reveal-d2, .reveal-d3, .reveal-d4 {
+    animation: none;
+  }
+}
+
+/* Hover card pour grilles livres */
+.book-card-hover {
+  transition: transform 0.25s var(--ease-smooth), box-shadow 0.25s var(--ease-smooth);
+}
+.book-card-hover:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}

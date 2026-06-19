@@ -1,32 +1,279 @@
-[
-  {
-    "id": "Q1",
-    "question": "DARIL — Item placeholder n°1 (HyperFormation v0.4 §4.4). Bundle V2 inaccessible depuis VM, à remplacer par les 16 items réels dès que Drive resynchronisé.",
-    "options": [
-      { "letter": "A", "text": "Axe Mémoire procédurale" },
-      { "letter": "B", "text": "Axe Mémoire déclarative" },
-      { "letter": "C", "text": "Axe Mémoire épisodique" },
-      { "letter": "D", "text": "Axe Mémoire de travail" }
-    ]
-  },
-  {
-    "id": "Q2",
-    "question": "Placeholder n°2 — à remplacer par item HyperFormation §4.4.",
-    "options": [
-      { "letter": "A", "text": "Option A" },
-      { "letter": "B", "text": "Option B" },
-      { "letter": "C", "text": "Option C" },
-      { "letter": "D", "text": "Option D" }
-    ]
-  },
-  {
-    "id": "Q3",
-    "question": "Placeholder n°3 — à remplacer par item HyperFormation §4.4.",
-    "options": [
-      { "letter": "A", "text": "Option A" },
-      { "letter": "B", "text": "Option B" },
-      { "letter": "C", "text": "Option C" },
-      { "letter": "D", "text": "Option D" }
-    ]
-  }
-]
+{
+  "version": "1.0",
+  "date_creation": "2026-06-14",
+  "auteur_calibration": "DARIL + Édouard de Boysson",
+  "doctrine_reference": "Spec HyperFormation v0.4 §4.4",
+  "scoring_par_defaut": "psychometric_irt",
+  "axe_requis_par_defaut": true,
+  "items": [
+    {
+      "id": "L001",
+      "categorie": "1.1 Logique - Syllogisme catégorique AEE",
+      "vignette": "Tous les comptables sont rigoureux. Aucun rigoureux n'est insouciant.",
+      "critere_explicite": "Conclusion nécessairement déductible des deux prémisses",
+      "options": [
+        {"label": "a", "text": "Tous les comptables sont insouciants"},
+        {"label": "b", "text": "Aucun comptable n'est insouciant"},
+        {"label": "c", "text": "Certains comptables sont insouciants"},
+        {"label": "d", "text": "On ne peut rien conclure"}
+      ],
+      "cle_attendue": "b",
+      "axe_attendu": "Syllogisme Celarent (AEE)",
+      "difficulte_visee": 0.35,
+      "phase_cible": "A_T2"
+    },
+    {
+      "id": "L002",
+      "categorie": "1.3 Logique - Divisibilité",
+      "vignette": "Soit l'ensemble {14, 21, 28, 35, 42, 50}.",
+      "critere_explicite": "Multiple de 7",
+      "options": [
+        {"label": "a", "text": "14"},
+        {"label": "b", "text": "28"},
+        {"label": "c", "text": "42"},
+        {"label": "d", "text": "50"}
+      ],
+      "cle_attendue": "d",
+      "axe_attendu": "Divisibilité arithmétique par 7",
+      "difficulte_visee": 0.15,
+      "phase_cible": "A_T1"
+    },
+    {
+      "id": "L003",
+      "categorie": "1.2 Logique - Contraposée",
+      "vignette": "On pose : « si la lumière est verte, alors les piétons traversent ».",
+      "critere_explicite": "Déduction logique valide à partir de cet énoncé seul",
+      "options": [
+        {"label": "a", "text": "Si les piétons traversent, la lumière est verte"},
+        {"label": "b", "text": "Si la lumière n'est pas verte, les piétons ne traversent pas"},
+        {"label": "c", "text": "Si les piétons ne traversent pas, la lumière n'est pas verte"},
+        {"label": "d", "text": "Aucune des trois"}
+      ],
+      "cle_attendue": "c",
+      "axe_attendu": "Contraposée P→Q équivaut à ¬Q→¬P",
+      "pieges": "a = réciproque, b = inverse",
+      "difficulte_visee": 0.55,
+      "phase_cible": "A_T2"
+    },
+    {
+      "id": "L004",
+      "categorie": "1.8 Logique - Wason selection",
+      "vignette": "Règle : « si une carte a une voyelle d'un côté, elle a un nombre pair de l'autre ». On voit quatre cartes : A, K, 4, 7.",
+      "critere_explicite": "Cartes qu'il faut retourner pour tester la règle",
+      "options": [
+        {"label": "a", "text": "A et 4"},
+        {"label": "b", "text": "A et K"},
+        {"label": "c", "text": "A et 7"},
+        {"label": "d", "text": "Toutes les quatre"}
+      ],
+      "cle_attendue": "c",
+      "axe_attendu": "Implication matérielle : antécédent (A) + contrapositive (7)",
+      "difficulte_visee": 0.80,
+      "phase_cible": "A_T2"
+    },
+    {
+      "id": "L005",
+      "categorie": "1.5 Logique - Probabilité sans remise",
+      "vignette": "Un sac contient 3 boules rouges et 7 bleues. On tire 2 boules sans remise.",
+      "critere_explicite": "Probabilité que les deux soient rouges",
+      "options": [
+        {"label": "a", "text": "9/100"},
+        {"label": "b", "text": "1/15"},
+        {"label": "c", "text": "3/10"},
+        {"label": "d", "text": "2/10"}
+      ],
+      "cle_attendue": "b",
+      "axe_attendu": "P(R1∩R2) = 3/10 × 2/9 = 6/90 = 1/15",
+      "pieges": "a confond avec tirage avec remise",
+      "difficulte_visee": 0.45,
+      "phase_cible": "A_T2"
+    },
+    {
+      "id": "L006",
+      "categorie": "1.6 Logique - Analogie créateur-œuvre",
+      "vignette": "ÉCRIVAIN est à ROMAN ce que COMPOSITEUR est à _____",
+      "critere_explicite": "Rapport sémantique : créateur vers œuvre achevée",
+      "options": [
+        {"label": "a", "text": "Note"},
+        {"label": "b", "text": "Symphonie"},
+        {"label": "c", "text": "Orchestre"},
+        {"label": "d", "text": "Partition"}
+      ],
+      "cle_attendue": "b",
+      "axe_attendu": "Créateur → œuvre achevée (Symphonie = équivalent musical du roman comme produit fini)",
+      "pieges": "a = composant atomique, c = exécutant, d = représentation",
+      "difficulte_visee": 0.40,
+      "phase_cible": "A_T2"
+    },
+    {
+      "id": "L007",
+      "categorie": "1.4 Logique - Non-distribution du moyen terme",
+      "vignette": "Tous les médecins sont titulaires d'un doctorat. Certains titulaires d'un doctorat sont chercheurs.",
+      "critere_explicite": "Conclusion nécessairement déductible",
+      "options": [
+        {"label": "a", "text": "Tous les médecins sont chercheurs"},
+        {"label": "b", "text": "Certains médecins sont chercheurs"},
+        {"label": "c", "text": "Certains chercheurs sont médecins"},
+        {"label": "d", "text": "Aucune des trois n'est nécessairement vraie"}
+      ],
+      "cle_attendue": "d",
+      "axe_attendu": "Sophisme du moyen terme non distribué",
+      "difficulte_visee": 0.70,
+      "phase_cible": "A_T2"
+    },
+    {
+      "id": "L008",
+      "categorie": "1.5 Logique - Permutations",
+      "vignette": "Cinq amis s'assoient sur un banc.",
+      "critere_explicite": "Nombre d'ordres distincts possibles",
+      "options": [
+        {"label": "a", "text": "25"},
+        {"label": "b", "text": "60"},
+        {"label": "c", "text": "120"},
+        {"label": "d", "text": "720"}
+      ],
+      "cle_attendue": "c",
+      "axe_attendu": "5! = 120",
+      "pieges": "d = 6!",
+      "difficulte_visee": 0.25,
+      "phase_cible": "A_T1"
+    },
+    {
+      "id": "L009",
+      "categorie": "1.2 Logique - Modus tollens",
+      "vignette": "Si la batterie est chargée, le moteur démarre. Constatation : le moteur ne démarre pas.",
+      "critere_explicite": "Conclusion logique strictement valide",
+      "options": [
+        {"label": "a", "text": "La batterie est déchargée"},
+        {"label": "b", "text": "La batterie n'est pas chargée"},
+        {"label": "c", "text": "On ne peut rien conclure"},
+        {"label": "d", "text": "La batterie peut être chargée ou non"}
+      ],
+      "cle_attendue": "b",
+      "axe_attendu": "Modus tollens ¬Q→¬P ; « déchargée » introduit une présupposition d'état antérieur, non requis",
+      "difficulte_visee": 0.55,
+      "phase_cible": "A_T2"
+    },
+    {
+      "id": "L010",
+      "categorie": "1.7 Logique - Intrus organologique",
+      "vignette": "Soit l'ensemble {GUITARE, HARPE, VIOLON, LUTH}.",
+      "critere_explicite": "Instrument à cordes pincées",
+      "options": [
+        {"label": "a", "text": "GUITARE"},
+        {"label": "b", "text": "HARPE"},
+        {"label": "c", "text": "VIOLON"},
+        {"label": "d", "text": "LUTH"}
+      ],
+      "cle_attendue": "c",
+      "axe_attendu": "Technique de jeu : cordes frottées (violon) vs pincées (les trois autres)",
+      "difficulte_visee": 0.30,
+      "phase_cible": "A_T2"
+    },
+    {
+      "id": "C001",
+      "categorie": "2.1.1 Clinique DSM-5 - TAG",
+      "vignette": "Mme L., 42 ans, consulte pour « toujours inquiète » depuis 8 mois suite à un changement de poste. Inquiétudes multi-domaines (santé enfants, finances, planning), difficiles à contrôler. Plaintes : tension musculaire, fatigabilité, sommeil non réparateur, irritabilité. Aucune attaque brutale identifiée. Pas d'idées suicidaires.",
+      "critere_explicite": "Diagnostic principal DSM-5-TR le plus parcimonieux",
+      "options": [
+        {"label": "a", "text": "Trouble anxiété généralisée"},
+        {"label": "b", "text": "Trouble panique"},
+        {"label": "c", "text": "Épisode dépressif majeur"},
+        {"label": "d", "text": "Trouble de l'adaptation avec anxiété"}
+      ],
+      "cle_attendue": "a",
+      "axe_attendu": "≥ 6 mois d'inquiétude excessive multi-domaines + ≥ 3 symptômes somatiques /6",
+      "calibration_remarque": "Édouard 2026-06-14 a exhibé un axe robuste non prévu : lecture longitudinale (d initial chronicisé en a). Item à reviser v2 pour préciser trajectoire évolutive. [PRÉSOMPTION-HUMAIN] appliquée.",
+      "source_datee": "DSM-5-TR APA 2022",
+      "difficulte_visee": 0.50,
+      "phase_cible": "B_clinique"
+    },
+    {
+      "id": "C002",
+      "categorie": "2.1.2 Clinique DSM-5 - TOC",
+      "vignette": "M. R., 28 ans, ingénieur. Depuis 2 ans, vérifications répétées (porte, gaz, four) 30-45 min avant de sortir. Pensées intrusives « j'ai peut-être laissé allumé », reconnues comme absurdes mais incontrôlables. Anxiété pré-vérification, soulagement transitoire post-vérification.",
+      "critere_explicite": "Diagnostic DSM-5-TR",
+      "options": [
+        {"label": "a", "text": "Trouble anxiété généralisée"},
+        {"label": "b", "text": "Trouble obsessionnel compulsif"},
+        {"label": "c", "text": "Personnalité obsessionnelle-compulsive (TPOC)"},
+        {"label": "d", "text": "Trouble panique avec agoraphobie"}
+      ],
+      "cle_attendue": "b",
+      "axe_attendu": "Obsessions ego-dystones (« reconnues comme absurdes ») + compulsions > 1 h/j soulageant temporairement",
+      "pieges": "c = TPOC est ego-syntone, pas de compulsion temporelle ritualisée ; argument professionnel (ingénieur) est contingent, ne tient pas comme axe robuste",
+      "source_datee": "DSM-5-TR APA 2022",
+      "difficulte_visee": 0.55,
+      "phase_cible": "B_clinique"
+    },
+    {
+      "id": "C003",
+      "categorie": "2.1.3 Clinique DSM-5 - Trouble panique avec agoraphobie",
+      "vignette": "Mme V., 35 ans. Première crise il y a 6 mois : palpitations brutales, sensation d'étouffement, sueurs, peur de mourir, pic à 5 min, résolution en 20 min. Bilan cardio normal. Depuis 4 mois, 6 nouvelles crises inattendues. Évite progressivement métro et supermarchés par peur de re-crise.",
+      "critere_explicite": "Diagnostic principal DSM-5-TR",
+      "options": [
+        {"label": "a", "text": "TAG avec décompensation"},
+        {"label": "b", "text": "Trouble panique avec agoraphobie"},
+        {"label": "c", "text": "Trouble somatoforme"},
+        {"label": "d", "text": "Anxiété sociale"}
+      ],
+      "cle_attendue": "b",
+      "axe_attendu": "Attaques de panique inattendues récurrentes + > 1 mois d'inquiétude anticipatoire + évitement agoraphobique (lieux sans échappatoire facile, pas peur du jugement social)",
+      "pieges": "d = anxiété sociale exige une peur du regard social ; métro et supermarché évités pour peur de crise, pas pour peur d'être jugé",
+      "source_datee": "DSM-5-TR APA 2022",
+      "difficulte_visee": 0.40,
+      "phase_cible": "B_clinique"
+    },
+    {
+      "id": "C004",
+      "categorie": "2.1.4 Clinique DSM-5 - Épisode dépressif majeur",
+      "vignette": "M. K., 50 ans. Depuis 6 semaines, humeur abattue quasi quotidienne, perte d'intérêt pour le golf et le jardinage, perte d'appétit (− 4 kg), réveil matinal précoce (4 h), fatigue, culpabilité diffuse, difficultés de concentration, idées de mort sans plan. Aucun antécédent maniaque ou hypomaniaque.",
+      "critere_explicite": "Diagnostic DSM-5-TR",
+      "options": [
+        {"label": "a", "text": "Trouble dépressif persistant (dysthymie)"},
+        {"label": "b", "text": "Épisode dépressif majeur unipolaire"},
+        {"label": "c", "text": "Trouble bipolaire II"},
+        {"label": "d", "text": "Trouble adaptation avec humeur dépressive"}
+      ],
+      "cle_attendue": "b",
+      "axe_attendu": "≥ 5/9 symptômes ≥ 2 semaines, dont humeur dépressive ET anhédonie + retentissement fonctionnel ; a = dysthymie exige ≥ 2 ans ; c = bipolaire II exige un épisode hypomaniaque historique",
+      "source_datee": "DSM-5-TR APA 2022",
+      "difficulte_visee": 0.35,
+      "phase_cible": "B_clinique"
+    },
+    {
+      "id": "C005",
+      "categorie": "2.1.5 Clinique DSM-5 - PTSD",
+      "vignette": "Lieutenant N., 32 ans, militaire. Il y a 8 mois, attentat lors d'une opération extérieure. Depuis : cauchemars répétés de l'événement, flashbacks déclenchés par le bruit de moteur, évitement actif des conversations sur le sujet, hypervigilance (sursauts), détachement émotionnel, insomnie.",
+      "critere_explicite": "Diagnostic DSM-5-TR",
+      "options": [
+        {"label": "a", "text": "Trouble adaptation avec anxiété"},
+        {"label": "b", "text": "Trouble panique"},
+        {"label": "c", "text": "État de stress post-traumatique (PTSD)"},
+        {"label": "d", "text": "Trouble dissociatif"}
+      ],
+      "cle_attendue": "c",
+      "axe_attendu": "Cinq grappes PTSD réunies (exposition + intrusion + évitement + altérations cognitives/humeur + hyperréactivité) > 1 mois ; a = adaptation n'a pas d'intrusion authentique",
+      "source_datee": "DSM-5-TR APA 2022",
+      "difficulte_visee": 0.30,
+      "phase_cible": "B_clinique"
+    },
+    {
+      "id": "S001",
+      "categorie": "3.1 Expertise métier - SAP S/4HANA Finance",
+      "vignette": "Tu migres un report ABAP ECC qui fait un SELECT sur BSEG. Post-migration S/4HANA, le report renvoie zéro ligne pour les périodes ouvertes alors qu'il y a clairement des écritures dans FB03.",
+      "critere_explicite": "Table à cibler pour retrouver les lignes de la pile actuelle",
+      "options": [
+        {"label": "a", "text": "ACDOCA"},
+        {"label": "b", "text": "FAGLFLEXA"},
+        {"label": "c", "text": "BSEG"},
+        {"label": "d", "text": "BKPF"}
+      ],
+      "cle_attendue": "a",
+      "axe_attendu": "ACDOCA = Universal Journal Entry, table active depuis S/4HANA (~2015) qui remplace BKPF/BSEG/FAGLFLEX/COEP ; BSEG est devenue compatibility view non écrite activement",
+      "source_datee": "SAP Note 2076652 et SAP S/4HANA Conversion Guide",
+      "difficulte_visee": 0.45,
+      "phase_cible": "B_sap"
+    }
+  ]
+}

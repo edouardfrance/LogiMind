@@ -2,11 +2,10 @@ import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
 
-// Endpoint de réception des soumissions QCM DARIL.
-// Si RESEND_API_KEY est défini en environnement Vercel, on envoie un mail
-// à daril@de-boysson.com via Resend (HTTP, pas de SMTP nécessaire).
-// Sinon on logge le payload côté serveur Vercel et le client bascule
-// automatiquement sur mailto:.
+// Endpoint de reception des soumissions QCM DARIL.
+// Si RESEND_API_KEY est defini en environnement Vercel, on envoie un mail
+// a daril@de-boysson.com via Resend (HTTP, sans SMTP). Sinon on logge le
+// payload cote serveur Vercel et le client bascule sur mailto:.
 
 export async function POST(req: Request) {
   try {
@@ -21,7 +20,7 @@ export async function POST(req: Request) {
     }
 
     const subject = `DARIL QCM v1 — ${body?.timestamp || new Date().toISOString()}`;
-    const text = `Réponses QCM DARIL\n\n${JSON.stringify(body, null, 2)}\n`;
+    const text = `Reponses QCM DARIL\n\n${JSON.stringify(body, null, 2)}\n`;
 
     const r = await fetch("https://api.resend.com/emails", {
       method: "POST",

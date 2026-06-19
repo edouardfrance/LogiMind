@@ -1,34 +1,63 @@
-export const metadata = {
-  title: "LogiMind",
-  description:
-    "LogiMind — marque éditoriale d'Édouard de Boysson : Memento Thérapies, Sens oubliés de la médecine, Fondation Culture, Électroculture, DEBOYSSON Matrix.",
-  metadataBase: new URL("https://www.logimind.org"),
-  openGraph: {
-    title: "LogiMind",
-    description:
-      "Maison d'édition d'Édouard de Boysson. Psychothérapies, sens oubliés, classiques DP commentés, électroculture, conseil SAP.",
-    url: "https://www.logimind.org",
-    siteName: "LogiMind",
-    locale: "fr_FR",
-    type: "website",
+import type { Metadata, Viewport } from 'next';
+import { Crimson_Pro, Inter } from 'next/font/google';
+import './globals.css';
+import { Header } from '@/components/Header';
+import { Footer } from '@/components/Footer';
+import { SmoothScroll } from '@/components/SmoothScroll';
+
+const crimson = Crimson_Pro({
+  subsets: ['latin'],
+  weight: ['400', '500', '600'],
+  variable: '--font-serif-google',
+  display: 'swap',
+});
+
+const inter = Inter({
+  subsets: ['latin'],
+  weight: ['400', '500', '600'],
+  variable: '--font-sans-google',
+  display: 'swap',
+});
+
+export const metadata: Metadata = {
+  metadataBase: new URL('https://logimind.org'),
+  title: {
+    default: 'Logimind — Bibliothèque Édouard de Boysson',
+    template: '%s — Logimind',
   },
+  description:
+    'Travaux d\'analyse et de synthèse en psychothérapies et sciences cognitives. Méthode documentaire et systémique. Disponibles en PDF, broché, relié et Kindle.',
+  openGraph: {
+    type: 'website',
+    locale: 'fr_FR',
+    url: 'https://logimind.org',
+    siteName: 'Logimind',
+  },
+  robots: { index: true, follow: true },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#f6f3ec' },
+    { media: '(prefers-color-scheme: dark)', color: '#1c1b18' },
+  ],
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
-    <html lang="fr">
-      <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-      </head>
-      <body
-        style={{
-          margin: 0,
-          fontFamily:
-            "system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif",
-          background: "#fafaf8",
-        }}
-      >
-        {children}
+    <html lang="fr" className={`${crimson.variable} ${inter.variable}`}>
+      <body>
+        <SmoothScroll />
+        <Header />
+        <main style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>{children}</main>
+        <Footer />
       </body>
     </html>
   );
