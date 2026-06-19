@@ -105,26 +105,39 @@ export default function DarilPage() {
   async function sendToDaril() {
     setSending(true);
     setSendMsg("");
+    const payload = {
+      timestamp: new Date().toISOString(),
+      version: "qcm_v1",
+      answers,
+    };
+    // Tentative 1 : API serveur (sera branchée Resend / SMTP en ITER 3).
     try {
       const res = await fetch("/api/daril/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          timestamp: new Date().toISOString(),
-          version: "qcm_v1",
-          answers,
-        }),
+        body: JSON.stringify(payload),
       });
       if (res.ok) {
-        setSendMsg("Réponses transmises à DARIL.");
-      } else {
-        setSendMsg("Échec transmission. Utilise le téléchargement JSON.");
+        const j = await res.json().catch(() => ({}));
+        if (j?.delivered) {
+          setSendMsg("Réponses transmises à DARIL (serveur).");
+          setSending(false);
+          return;
+        }
       }
     } catch {
-      setSendMsg("Échec réseau. Utilise le téléchargement JSON.");
-    } finally {
-      setSending(false);
+      /* on bascule sur mailto */
     }
+    // Tentative 2 : mailto: client (fonctionne partout, sans serveur).
+    const subject = encodeURIComponent(`DARIL QCM v1 — ${payload.timestamp}`);
+    const body = encodeURIComponent(
+      `Réponses QCM DARIL\n\n${JSON.stringify(payload, null, 2)}\n`
+    );
+    window.location.href = `mailto:daril@de-boysson.com?subject=${subject}&body=${body}`;
+    setSendMsg(
+      "Ouverture du client mail (destinataire daril@de-boysson.com). Si rien ne s'ouvre, télécharge le JSON."
+    );
+    setSending(false);
   }
 
   // --- Auth screen ---
