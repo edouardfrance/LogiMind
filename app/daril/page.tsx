@@ -135,7 +135,7 @@ export default function DarilPage() {
     );
     window.location.href = `mailto:daril@de-boysson.com?subject=${subject}&body=${body}`;
     setSendMsg(
-      "Ouverture du client mail (destinataire daril@de-boysson.com). Si rien ne s'ouvre, télécharge le JSON."
+      "Ouverture du client mail (destinataire daril@de-boysson.com). Si rien ne s'ouvre, téléchargez le JSON."
     );
     setSending(false);
   }
