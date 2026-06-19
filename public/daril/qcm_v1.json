@@ -1,0 +1,32 @@
+[
+  {
+    "id": "Q1",
+    "question": "DARIL — Item placeholder n°1 (HyperFormation v0.4 §4.4). Bundle V2 inaccessible depuis VM, à remplacer par les 16 items réels dès que Drive resynchronisé.",
+    "options": [
+      { "letter": "A", "text": "Axe Mémoire procédurale" },
+      { "letter": "B", "text": "Axe Mémoire déclarative" },
+      { "letter": "C", "text": "Axe Mémoire épisodique" },
+      { "letter": "D", "text": "Axe Mémoire de travail" }
+    ]
+  },
+  {
+    "id": "Q2",
+    "question": "Placeholder n°2 — à remplacer par item HyperFormation §4.4.",
+    "options": [
+      { "letter": "A", "text": "Option A" },
+      { "letter": "B", "text": "Option B" },
+      { "letter": "C", "text": "Option C" },
+      { "letter": "D", "text": "Option D" }
+    ]
+  },
+  {
+    "id": "Q3",
+    "question": "Placeholder n°3 — à remplacer par item HyperFormation §4.4.",
+    "options": [
+      { "letter": "A", "text": "Option A" },
+      { "letter": "B", "text": "Option B" },
+      { "letter": "C", "text": "Option C" },
+      { "letter": "D", "text": "Option D" }
+    ]
+  }
+]
