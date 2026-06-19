@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const EXPECTED_HASH =
   "a6f319ec2f3dfdf6b9b4926d532fa049b0da7f02557519898d3c0a376b66a247";
@@ -8,6 +8,7 @@ const EXPECTED_HASH =
 type QcmItem = {
   id: string;
   question: string;
+  axis?: string;
   options: { letter: string; text: string }[];
 };
 
@@ -28,6 +29,8 @@ export default function DarilPage() {
   const [idx, setIdx] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [done, setDone] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [sendMsg, setSendMsg] = useState("");
 
   useEffect(() => {
     if (typeof window !== "undefined" && sessionStorage.getItem("daril_ok") === "1") {
@@ -43,6 +46,11 @@ export default function DarilPage() {
       .catch(() => setErr("Échec chargement QCM."));
   }, [auth]);
 
+  const cur = items[idx];
+  const total = items.length;
+  const answered = cur ? answers[cur.id] : undefined;
+  const progress = total ? Math.round(((idx + (answered ? 1 : 0)) / total) * 100) : 0;
+
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
     setErr("");
@@ -55,21 +63,76 @@ export default function DarilPage() {
     }
   }
 
-  function answer(letter: string) {
-    const cur = items[idx];
+  function pick(letter: string) {
     if (!cur) return;
     setAnswers({ ...answers, [cur.id]: letter });
-    if (idx + 1 < items.length) {
-      setIdx(idx + 1);
-    } else {
-      setDone(true);
+  }
+
+  function next() {
+    if (!answered) return;
+    if (idx + 1 < total) setIdx(idx + 1);
+    else setDone(true);
+  }
+
+  function prev() {
+    if (idx > 0) setIdx(idx - 1);
+  }
+
+  function restart() {
+    setAnswers({});
+    setIdx(0);
+    setDone(false);
+    setSendMsg("");
+  }
+
+  function downloadJson() {
+    const payload = {
+      timestamp: new Date().toISOString(),
+      version: "qcm_v1",
+      answers,
+    };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], {
+      type: "application/json",
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `daril_qcm_${new Date().toISOString().slice(0, 19).replace(/[:T]/g, "-")}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  async function sendToDaril() {
+    setSending(true);
+    setSendMsg("");
+    try {
+      const res = await fetch("/api/daril/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          timestamp: new Date().toISOString(),
+          version: "qcm_v1",
+          answers,
+        }),
+      });
+      if (res.ok) {
+        setSendMsg("Réponses transmises à DARIL.");
+      } else {
+        setSendMsg("Échec transmission. Utilise le téléchargement JSON.");
+      }
+    } catch {
+      setSendMsg("Échec réseau. Utilise le téléchargement JSON.");
+    } finally {
+      setSending(false);
     }
   }
 
+  // --- Auth screen ---
   if (!auth) {
     return (
       <main style={{ padding: "2rem", maxWidth: 420, margin: "0 auto" }}>
-        <h1>DARIL — Accès privé</h1>
+        <h1 style={{ marginBottom: 4 }}>DARIL</h1>
+        <p style={{ color: "#666", marginTop: 0 }}>Zone privée — tests QCM.</p>
         <form onSubmit={handleLogin}>
           <div style={{ marginBottom: 12 }}>
             <label>
@@ -97,7 +160,13 @@ export default function DarilPage() {
           </div>
           <button
             type="submit"
-            style={{ padding: "8px 16px", background: "#222", color: "#fff", border: 0 }}
+            style={{
+              padding: "10px 16px",
+              background: "#222",
+              color: "#fff",
+              border: 0,
+              cursor: "pointer",
+            }}
           >
             Entrer
           </button>
@@ -107,21 +176,79 @@ export default function DarilPage() {
     );
   }
 
+  // --- Done screen ---
   if (done) {
+    const tally = Object.values(answers).reduce<Record<string, number>>(
+      (acc, l) => ({ ...acc, [l]: (acc[l] || 0) + 1 }),
+      {}
+    );
     return (
       <main style={{ padding: "2rem", maxWidth: 720, margin: "0 auto" }}>
         <h1>DARIL — Réponses enregistrées</h1>
-        <p>Merci. {Object.keys(answers).length} item(s) traité(s).</p>
-        <pre
-          style={{
-            background: "#f4f4f4",
-            padding: 12,
-            overflow: "auto",
-            fontSize: 13,
-          }}
-        >
-          {JSON.stringify(answers, null, 2)}
-        </pre>
+        <p>
+          {Object.keys(answers).length} item(s) sur {total} traité(s).
+        </p>
+        <h3>Répartition</h3>
+        <ul>
+          {["A", "B", "C", "D"].map((l) => (
+            <li key={l}>
+              <strong>{l}</strong> : {tally[l] || 0}
+            </li>
+          ))}
+        </ul>
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 16 }}>
+          <button
+            onClick={sendToDaril}
+            disabled={sending}
+            style={{
+              padding: "10px 16px",
+              background: "#0a6",
+              color: "#fff",
+              border: 0,
+              cursor: "pointer",
+            }}
+          >
+            {sending ? "Envoi…" : "Envoyer à DARIL"}
+          </button>
+          <button
+            onClick={downloadJson}
+            style={{
+              padding: "10px 16px",
+              background: "#222",
+              color: "#fff",
+              border: 0,
+              cursor: "pointer",
+            }}
+          >
+            Télécharger JSON
+          </button>
+          <button
+            onClick={restart}
+            style={{
+              padding: "10px 16px",
+              background: "#fff",
+              color: "#222",
+              border: "1px solid #222",
+              cursor: "pointer",
+            }}
+          >
+            Recommencer
+          </button>
+        </div>
+        {sendMsg && <p style={{ marginTop: 12, color: "#444" }}>{sendMsg}</p>}
+        <details style={{ marginTop: 24 }}>
+          <summary style={{ cursor: "pointer" }}>Détail des réponses</summary>
+          <pre
+            style={{
+              background: "#f4f4f4",
+              padding: 12,
+              overflow: "auto",
+              fontSize: 13,
+            }}
+          >
+            {JSON.stringify(answers, null, 2)}
+          </pre>
+        </details>
       </main>
     );
   }
@@ -135,32 +262,84 @@ export default function DarilPage() {
     );
   }
 
-  const cur = items[idx];
+  // --- Question screen ---
   return (
     <main style={{ padding: "2rem", maxWidth: 720, margin: "0 auto" }}>
-      <p style={{ color: "#666" }}>
-        Item {idx + 1} / {items.length}
-      </p>
+      <div style={{ marginBottom: 16 }}>
+        <div
+          style={{
+            background: "#eee",
+            height: 6,
+            borderRadius: 3,
+            overflow: "hidden",
+          }}
+        >
+          <div
+            style={{
+              background: "#0a6",
+              height: "100%",
+              width: `${progress}%`,
+              transition: "width 200ms",
+            }}
+          />
+        </div>
+        <p style={{ color: "#666", margin: "8px 0 0" }}>
+          Item {idx + 1} / {total}
+          {cur?.axis ? ` — ${cur.axis}` : ""}
+        </p>
+      </div>
       <h2 style={{ marginTop: 8 }}>{cur.question}</h2>
       <ul style={{ listStyle: "none", padding: 0 }}>
-        {cur.options.map((o) => (
-          <li key={o.letter} style={{ marginBottom: 8 }}>
-            <button
-              onClick={() => answer(o.letter)}
-              style={{
-                width: "100%",
-                textAlign: "left",
-                padding: 12,
-                border: "1px solid #ccc",
-                background: "#fff",
-                cursor: "pointer",
-              }}
-            >
-              <strong>{o.letter}.</strong> {o.text}
-            </button>
-          </li>
-        ))}
+        {cur.options.map((o) => {
+          const selected = answered === o.letter;
+          return (
+            <li key={o.letter} style={{ marginBottom: 8 }}>
+              <button
+                onClick={() => pick(o.letter)}
+                style={{
+                  width: "100%",
+                  textAlign: "left",
+                  padding: 12,
+                  border: selected ? "2px solid #0a6" : "1px solid #ccc",
+                  background: selected ? "#f0fbf6" : "#fff",
+                  cursor: "pointer",
+                  fontSize: 15,
+                }}
+              >
+                <strong>{o.letter}.</strong> {o.text}
+              </button>
+            </li>
+          );
+        })}
       </ul>
+      <div style={{ display: "flex", justifyContent: "space-between", marginTop: 16 }}>
+        <button
+          onClick={prev}
+          disabled={idx === 0}
+          style={{
+            padding: "10px 16px",
+            background: idx === 0 ? "#eee" : "#fff",
+            color: "#222",
+            border: "1px solid #ccc",
+            cursor: idx === 0 ? "not-allowed" : "pointer",
+          }}
+        >
+          ← Précédent
+        </button>
+        <button
+          onClick={next}
+          disabled={!answered}
+          style={{
+            padding: "10px 16px",
+            background: answered ? "#0a6" : "#bbb",
+            color: "#fff",
+            border: 0,
+            cursor: answered ? "pointer" : "not-allowed",
+          }}
+        >
+          {idx + 1 === total ? "Terminer" : "Suivant →"}
+        </button>
+      </div>
     </main>
   );
 }

@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /daril
+Disallow: /api/
+
+Sitemap: https://www.logimind.org/sitemap.xml
