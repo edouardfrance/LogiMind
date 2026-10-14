@@ -44,3 +44,10 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .env*.local
+
+# python (OCR / data pipeline env)
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+.ocr-cache/
